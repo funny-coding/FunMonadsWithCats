@@ -26,6 +26,7 @@ project/plugins/project/
 .idea/*/*/*
 .idea/*/*
 .idea/*
+.idea/modules/*
 # Sensitive or high-churn files:
 .idea/**/dataSources/
 .idea/**/dataSources.ids

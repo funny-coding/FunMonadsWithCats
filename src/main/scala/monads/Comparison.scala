@@ -8,6 +8,12 @@ import cats.instances.future._
 import scala.concurrent.Future
 
 object SuperNaive {
+  case class User(name: String)
+  case class Address(city: String)
+
+  def getUser(name: String): Future[User] = Future.successful(User("Nader"))
+
+  def getAddress(user: User): Future[Address] = Future.successful(Address("Paris"))
 
   def getCity: Future[String] =
     for {
@@ -15,17 +21,15 @@ object SuperNaive {
       address <- getAddress(user)
     } yield address.city
 
-  def getUser(name: String): Future[User] = Future.successful(User("Nader"))
-
-  def getAddress(user: User): Future[Address] = Future.successful(Address("Paris"))
-
-  case class User(name: String)
-
-  case class Address(city: String)
-
 }
 
 object Humm {
+  case class User(name: String)
+  case class Address(city: String)
+
+  def getUser(name: String): Future[Option[User]] = Future.successful(Some(User("Nader")))
+
+  def getAddress(user: User): Future[Option[Address]] = Future.successful(Some(Address("Paris")))
 
   def getCityWithNoMonadTransformers: Future[Option[String]] =
     for {
@@ -36,25 +40,15 @@ object Humm {
       }
     } yield maybeCity
 
-  def getUser(name: String): Future[Option[User]] = Future.successful(Some(User("Nader")))
-
-  def getAddress(user: User): Future[Option[Address]] = Future.successful(Some(Address("Paris")))
-
   def getCityWithMonadT: Future[Option[String]] =
     (for {
       user <- OptionT(getUser("Nader"))
       address <- OptionT(getAddress(user))
     } yield address.city).value
-
-  case class User(name: String)
-
-  case class Address(city: String)
 }
 
 object GettinMessy {
-
   case class User(name: String)
-
   case class MyError(msg: String)
 
   def existUser(id: String): Future[Option[User]] = {
